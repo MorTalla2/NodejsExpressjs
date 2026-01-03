@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur QR Code</title>
+</head>
+<body>
+    <h1>Générateur de QR Code</h1>
+    <form action="/generer" method="post">
+        <label for="id_url">URL du site</label>
+        <input type="text" name="url" id="id_url" placeholder="www.google.com ou https://google.com" required><br><br>
+        
+        <label for="id_site">Nom du site</label>
+        <input type="text" name="nom_site" id="id_site" placeholder="Google" required><br><br>
+        
+        <button type="submit">Générer</button>
+    </form>
+</body>
+</html>
