@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Tâches</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .btn-edit {
+            background: #f59e0b;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-en-cours {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .status-termine {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .actions form {
+            display: inline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Gestionnaire de Tâches</h1>
+
+        <!-- Formulaire d'ajout -->
+        <div class="card">
+            <h2>➕ Ajouter une tâche</h2>
+            <form action="/taches" method="POST">
+                <div class="form-group">
+                    <label for="nom">Nom de la tâche *</label>
+                    <input type="text" id="nom" name="nom" required placeholder="Ex: Faire les courses">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" placeholder="Détails de la tâche">
+                </div>
+
+                <div class="form-group">
+                    <label for="statut">Statut</label>
+                    <select id="statut" name="statut">
+                        <option value="en cours">En cours</option>
+                        <option value="terminé">Terminé</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+            </form>
+        </div>
+
+        <!-- Liste des tâches -->
+        <div class="card">
+            <h2>📋 Liste des tâches</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Apprendre Express</strong></td>
+                        <td>Suivre un tutoriel sur Express.js</td>
+                        <td><span class="status-badge status-en-cours">En cours</span></td>
+                        <td>
+                            <div class="actions">
+                                <a href="#" class="btn btn-edit">✏️ Modifier</a>
+                                <form action="/taches/1/supprimer" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer cette tâche ?')">🗑️ Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Faire les courses</strong></td>
+                        <td>Acheter du pain et du lait</td>
+                        <td><span class="status-badge status-termine">Terminé</span></td>
+                        <td>
+                            <div class="actions">
+                                <a href="#" class="btn btn-edit">✏️ Modifier</a>
+                                <form action="/taches/2/supprimer" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer cette tâche ?')">🗑️ Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
